@@ -1,8 +1,8 @@
 """Blogly application."""
+
 from flask import Flask, redirect, render_template, request, url_for
-from models import connect_db, db, User
+from models import  connect_db, db, User
 from flask_debugtoolbar import DebugToolbarExtension
-from flask_sqlalchemy import SQLAlchemy
 
 
 app = Flask(__name__)
@@ -11,12 +11,11 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
 app.config['SECRET_KEY'] = 'secretkey'
 
+
 toolbar = DebugToolbarExtension(app)
 
-db = SQLAlchemy(app)
 connect_db(app)
 db.create_all()
-
 
 @app.route('/')
 def root():
@@ -69,3 +68,6 @@ def delete_user(user_id):
     db.session.delete(user)
     db.session.commit()
     return redirect(url_for('list_users'))
+
+
+
