@@ -1,9 +1,10 @@
 """Blogly application."""
 
-from flask import Flask
-from model import db, connect_db
+from flask import Flask, redirect, render_template, request, url_for
+from models import  connect_db, db
 from flask_debugtoolbar import DebugToolbarExtension
-from flask_sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy  # type: ignore
+
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///blogly'
@@ -17,7 +18,7 @@ toolbar = DebugToolbarExtension(app)
 
 db = SQLAlchemy(app)
 
-from model import db, User
+from models import db, User
 db.init_app(app)
 
 with app.app_context():
@@ -40,7 +41,7 @@ def new_user():
 def add_user():
     first_name = request.form['first_name']
     last_name = request.form['last_name']
-    image_url = request.form['image_url'] or 'https://via.placeholder.com/150'
+    image_url = request.form['image_url'] or "https://facecard.com"
 
     new_user = User(first_name=first_name, last_name=last_name, image_url=image_url)
     db.session.add(new_user)
@@ -76,5 +77,4 @@ def delete_user(user_id):
     return redirect(url_for('list_users'))
 
 
-if __name__ == '__main__':
-    app.run(debug=True)
+
