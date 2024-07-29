@@ -1,22 +1,18 @@
 {% extends 'base.html' %}
 
-{% block title %}New User{% endblock %}
+{% block title %}New Post{% endblock %}
 
 {% block content %}
-  <h1>New User</h1>
-  <form method="POST" action="{{ url_for('add_user') }}">
+  <h1>New Post</h1>
+  <form method="POST" action="{{ url_for('add_post', user_id=user_id) }}">
     <div class="form-group">
-      <label for="first_name">First Name</label>
-      <input type="text" class="form-control" id="first_name" name="first_name" required>
+      <label for="title">Title</label>
+      <input type="text" class="form-control" id="title" name="title" required>
     </div>
     <div class="form-group">
-      <label for="last_name">Last Name</label>
-      <input type="text" class="form-control" id="last_name" name="last_name" required>
+      <label for="content">Content</label>
+      <textarea class="form-control" id="content" name="content" rows="5" required></textarea>
     </div>
-    <div class="form-group">
-      <label for="image_url">Image URL</label>
-      <input type="url" class="form-control" id="image_url" name="image_url">
-    </div>
-    <button type="submit" class="btn btn-primary">Add</button>
+    <button type="submit" class="btn btn-primary">Add Post</button>
   </form>
 {% endblock %}

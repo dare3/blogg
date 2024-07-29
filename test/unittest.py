@@ -1,6 +1,6 @@
 import unittest
 from app import app, db
-from models import User
+from models import User, Post
 
 class BloglyTestCase(unittest.TestCase):
 
@@ -13,6 +13,9 @@ class BloglyTestCase(unittest.TestCase):
             db.create_all()
             user = User(first_name="Test", last_name="User", image_url="https://facecard.com")
             db.session.add(user)
+            db.session.commit()
+            post = Post(title="Test Post", content="Test Content", user_id=user.id)
+            db.session.add(post)
             db.session.commit()
 
     def tearDown(self):
@@ -29,6 +32,7 @@ class BloglyTestCase(unittest.TestCase):
             user = User.query.first()
             result = self.client.get(f'/users/{user.id}')
             self.assertIn(b'Test User', result.data)
+            self.assertIn(b'Test Post', result.data)
 
     def test_add_user(self):
         with app.app_context():
@@ -48,6 +52,24 @@ class BloglyTestCase(unittest.TestCase):
                 'image_url': 'https://facecard.com'
             }, follow_redirects=True)
             self.assertIn(b'Edited User', result.data)
+
+    def test_add_post(self):
+        with app.app_context():
+            user = User.query.first()
+            result = self.client.post(f'/users/{user.id}/posts/new', data={
+                'title': 'New Post',
+                'content': 'New Content'
+            }, follow_redirects=True)
+            self.assertIn(b'New Post', result.data)
+
+    def test_edit_post(self):
+        with app.app_context():
+            post = Post.query.first()
+            result = self.client.post(f'/posts/{post.id}/edit', data={
+                'title': 'Edited Post',
+                'content': 'Edited Content'
+            }, follow_redirects=True)
+            self.assertIn(b'Edited Post', result.data)
 
 if __name__ == '__main__':
     unittest.main()
