@@ -9,8 +9,8 @@ with app.app_context():
     Post.query.delete()
 
     # Add users
-    user1 = User(first_name="John", last_name="Doe", image_url="https://example.com/johndoe.jpg")
-    user2 = User(first_name="Jane", last_name="Smith", image_url="https://example.com/janesmith.jpg")
+    user1 = User(first_name="John", last_name="Doe", image_url="https:facecard.com/greybolt.jpg")
+    user2 = User(first_name="Jane", last_name="Smith", image_url="https:facecard.com/jacksmith.jpg")
 
     db.session.add_all([user1, user2])
     db.session.commit()
